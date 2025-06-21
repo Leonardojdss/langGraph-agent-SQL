@@ -1,32 +1,57 @@
 # LangGraph Agent SQL
 
-Este projeto implementa um agente inteligente que permite interagir com um banco de dados SQLite usando linguagem natural. O agente é construído usando LangGraph e pode responder perguntas sobre dados do banco.
+Este projeto implementa um agente inteligente baseado em LangGraph que permite interagir com um banco de dados SQL usando linguagem natural. O agente utiliza um fluxo de trabalho estruturado para gerar, validar e executar consultas SQL de forma segura e eficiente.
 
 ## 🚀 Funcionalidades
 
 - **Chat com banco de dados**: Converse com seus dados usando linguagem natural
-- **Consultas SQL automáticas**: O agente gera consultas SQL automaticamente baseadas nas suas perguntas
-- **Validação de consultas**: Verificação automática de sintaxe antes da execução
-- **Interface de linha de comando**: Interface simples e intuitiva
-- **Dados de exemplo**: Banco de dados pré-configurado com dados de vendas
+- **Fluxo inteligente de consultas**: Sistema de múltiplas etapas que lista tabelas, obtém esquemas e gera consultas
+- **Validação automática**: Verificação de sintaxe SQL e correção de erros comuns antes da execução
+- **Memória de conversação**: Mantém contexto da conversa usando MemorySaver do LangGraph
+- **Interface streaming**: Resposta em tempo real durante o processamento
+- **Prompts especializados**: Prompts otimizados para geração e validação de consultas SQL
+- **Dados de exemplo**: Banco de dados pré-configurado com dados de vendas e faturamento
+
+## 🏗️ Arquitetura
+
+O projeto utiliza LangGraph para implementar um fluxo de trabalho estruturado:
+
+1. **List Tables**: Lista todas as tabelas disponíveis no banco
+2. **Get Schema**: Obtém o esquema das tabelas relevantes
+3. **Generate Query**: Gera consulta SQL baseada na pergunta do usuário
+4. **Check Query**: Valida e corrige a consulta gerada
+5. **Run Query**: Executa a consulta e retorna os resultados
 
 ## 📁 Estrutura do Projeto
 
 ```
 langGraph-agent-SQL/
-├── app.py                          # Aplicação principal
-├── requirements.txt                # Dependências do projeto
-├── agents/
-│   └── agent_sql.py               # Configuração do agente SQL
+├── app.py                              # Aplicação principal com interface CLI
+├── requirements.txt                    # Dependências do projeto
+├── graph_agents/
+│   ├── agent_sql.py                   # Configuração e inicialização do agente
+│   └── graph_sql.py                   # Definição do grafo LangGraph
 ├── database/
-│   ├── costumer-database.db       # Banco de dados SQLite
-│   ├── create_table.sql           # Script de criação de tabelas
-│   └── faturamento_vendas_insert.sql # Script com dados de exemplo
+│   ├── costumer-database.db           # Banco de dados SQLite
+│   ├── create_table.sql               # Script de criação de tabelas
+│   └── faturamento_vendas_insert.sql  # Script com dados de exemplo
 ├── infra/
-│   └── llm.py                     # Configuração do modelo de linguagem
+│   └── llm.py                         # Configuração do modelo de linguagem
+├── prompt/
+│   ├── generate_query_system_prompt.txt  # Prompt para geração de consultas
+│   └── check_query_system_prompt.txt     # Prompt para validação de consultas
 └── tool/
-    └── sql_tool.py                # Ferramentas para interação com SQL
+    └── sql_tool.py                    # Ferramentas SQL usando LangChain Community
 ```
+
+## 🛠️ Tecnologias Utilizadas
+
+- **LangGraph**: Framework para construção de aplicações de IA com fluxos estruturados
+- **LangChain**: Biblioteca para integração com modelos de linguagem
+- **OpenAI GPT-4o-mini**: Modelo de linguagem para geração e validação de consultas
+- **SQLite**: Banco de dados leve e eficiente
+- **Python**: Linguagem de programação principal
+- **python-dotenv**: Gerenciamento de variáveis de ambiente
 
 ## 🛠️ Pré-requisitos
 
@@ -123,10 +148,26 @@ python app.py
 
 ### 2. Interagir com o agente
 
-Digite suas perguntas em linguagem natural.
+Digite suas perguntas em linguagem natural sobre os dados. Exemplos:
 
+```
+User: Qual foi o faturamento total por mês?
+User: Mostre os 5 produtos mais vendidos
+User: Qual cliente teve o maior valor de compra?
+```
 
-### 3. Sair da aplicação
+### 3. Monitorar o fluxo
+
+O agente seguirá automaticamente este fluxo:
+1. Lista as tabelas disponíveis
+2. Obtém o esquema das tabelas relevantes
+3. Gera uma consulta SQL
+4. Valida e corrige a consulta se necessário
+5. Executa a consulta e apresenta os resultados
+
+![alt text](image.png)
+
+### 4. Sair da aplicação
 
 Digite `exit` ou `quit` para encerrar o chat.
 
@@ -137,3 +178,23 @@ Digite `exit` ou `quit` para encerrar o chat.
 3. Commit suas mudanças (`git commit -am 'Adiciona nova feature'`)
 4. Push para a branch (`git push origin feature/nova-feature`)
 5. Abra um Pull Request
+
+## 📝 Changelog
+
+### v2.0.0 - Atual
+- ✅ Migração para arquitetura LangGraph mais robusta
+- ✅ Implementação de fluxo estruturado de consultas
+- ✅ Sistema de validação de consultas SQL
+- ✅ Memória de conversação com MemorySaver
+- ✅ Prompts especializados para cada etapa
+- ✅ Interface streaming para respostas em tempo real
+- ✅ Reorganização da estrutura de pastas
+
+### v1.0.0 - Anterior
+- ✅ Implementação básica do agente LangGraph SQL
+- ✅ Integração com OpenAI
+- ✅ Interface CLI simples
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
